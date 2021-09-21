@@ -4,10 +4,10 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import { Platform } from "react-native";
-import { LongPressGestureHandler } from "react-native-gesture-handler";
-import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+} from 'react';
+import { Platform } from 'react-native';
+import { LongPressGestureHandler } from 'react-native-gesture-handler';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Animated, {
   runOnJS,
   runOnUI,
@@ -17,25 +17,25 @@ import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
-} from "react-native-reanimated";
-import { Path, Svg } from "react-native-svg";
+} from 'react-native-reanimated';
+import { Path, Svg } from 'react-native-svg';
 import ChartContext, {
   useGenerateValues as generateValues,
-} from "../../helpers/ChartContext";
-import { findYExtremes } from "../../helpers/extremesHelpers";
-import { svgBezierPath } from "../../smoothing/smoothSVG";
-import { pathPropertiesModule, useUIValue } from "./pathProperties";
+} from '../../helpers/ChartContext';
+import { findYExtremes } from '../../helpers/extremesHelpers';
+import { svgBezierPath } from '../../smoothing/smoothSVG';
+import { pathPropertiesModule, useUIValue } from './pathProperties';
 
 function impactHeavy() {
-  "worklet";
+  'worklet';
   (runOnJS
     ? runOnJS(ReactNativeHapticFeedback.trigger)
-    : ReactNativeHapticFeedback.trigger)("impactHeavy");
+    : ReactNativeHapticFeedback.trigger)('impactHeavy');
 }
 
 export const InternalContext = createContext(null);
 
-const android = Platform.OS === "android";
+const android = Platform.OS === 'android';
 
 const springDefaultConfig = {
   damping: 15,
@@ -52,7 +52,7 @@ const timingAnimationDefaultConfig = {
 };
 
 function combineConfigs(a, b) {
-  "worklet";
+  'worklet';
   const r = {};
   const keysA = Object.keys(a);
   for (let i = 0; i < keysA.length; i++) {
@@ -95,7 +95,7 @@ function setoriginalXYAccordingToPosition(
   position,
   data
 ) {
-  "worklet";
+  'worklet';
   let idx = 0;
   for (let i = 0; i < data.value.length; i++) {
     if (data.value[i].x >= position) {
@@ -111,17 +111,17 @@ function setoriginalXYAccordingToPosition(
     // java.lang.RuntimeException: undefined is not an object (evaluating 'data.value[idx].originalX')
     // why data.value = [] sometimes onActive?
     // eslint-disable-next-line no-console
-    console.warn("No data available for chart", data.value.length, idx);
+    console.warn('No data available for chart', data.value.length, idx);
     return;
   }
   originalX.value = data.value[idx].originalX.toString();
   originalY.value = data.value[idx].originalY
     ? data.value[idx].originalY.toString()
-    : "undefined";
+    : 'undefined';
 }
 
 function positionXWithMargin(x, margin, width) {
-  "worklet";
+  'worklet';
   if (x < margin) {
     return Math.max(3 * x - 2 * margin, 0);
   } else if (width - x < margin) {
@@ -132,8 +132,8 @@ function positionXWithMargin(x, margin, width) {
 }
 
 function getValue(data, i, smoothingStrategy) {
-  "worklet";
-  if (smoothingStrategy.value === "bezier") {
+  'worklet';
+  if (smoothingStrategy.value === 'bezier') {
     if (i === 0) {
       return data.value[i];
     }
@@ -191,20 +191,20 @@ export default function ChartPathProvider({
     providedData = rawData,
   } = useContext(ChartContext) || generateValues();
 
-  const prevData = useSharedValue(valuesStore.current.prevData, "prevData");
-  const currData = useSharedValue(valuesStore.current.currData, "currData");
+  const prevData = useSharedValue(valuesStore.current.prevData, 'prevData');
+  const currData = useSharedValue(valuesStore.current.currData, 'currData');
   const curroriginalData = useSharedValue(
     valuesStore.current.curroriginalData,
-    "curroriginalData"
+    'curroriginalData'
   );
   const hitSlopValue = useSharedValue(hitSlop);
   const hapticsEnabledValue = useSharedValue(hapticsEnabled);
   const [extremes, setExtremes] = useState({});
-  const isAnimationInProgress = useSharedValue(false, "isAnimationInProgress");
+  const isAnimationInProgress = useSharedValue(false, 'isAnimationInProgress');
   const pathPropertiesUI = useUIValue();
 
   const [data, setData] = useState(providedData);
-  const dataQueue = useSharedValue(valuesStore.current.dataQueue, "dataQueue");
+  const dataQueue = useSharedValue(valuesStore.current.dataQueue, 'dataQueue');
   useEffect(() => {
     if (isAnimationInProgress.value) {
       dataQueue.value.push(providedData);
@@ -263,7 +263,7 @@ export default function ChartPathProvider({
     }
   }, [data]);
 
-  const isStarted = useSharedValue(false, "isStarted");
+  const isStarted = useSharedValue(false, 'isStarted');
 
   const onLongPressGestureEvent = useAnimatedGestureHandler({
     onActive: (event) => {
@@ -306,8 +306,8 @@ export default function ChartPathProvider({
     onCancel: (event) => {
       isStarted.value = false;
       state.value = event.state;
-      originalX.value = "";
-      originalY.value = "";
+      originalX.value = '';
+      originalY.value = '';
       dotScale.value = withSpring(
         0,
         combineConfigs(springDefaultConfig, springConfig)
@@ -324,8 +324,8 @@ export default function ChartPathProvider({
     onEnd: (event) => {
       isStarted.value = false;
       state.value = event.state;
-      originalX.value = "";
-      originalY.value = "";
+      originalX.value = '';
+      originalY.value = '';
       dotScale.value = withSpring(
         0,
         combineConfigs(springDefaultConfig, springConfig)
@@ -346,8 +346,8 @@ export default function ChartPathProvider({
     onFail: (event) => {
       isStarted.value = false;
       state.value = event.state;
-      originalX.value = "";
-      originalY.value = "";
+      originalX.value = '';
+      originalY.value = '';
       dotScale.value = withSpring(
         0,
         combineConfigs(springDefaultConfig, springConfig)
@@ -480,7 +480,7 @@ function ChartPath({
   }, [height, layoutSize, width]);
 
   const createPath = () => {
-    "worklet";
+    'worklet';
 
     let fromValue = prevData.value;
     let toValue = currData.value;
@@ -549,14 +549,14 @@ function ChartPath({
     if (res.length !== 0) {
       const firstValue = res[0];
       const lastValue = res[res.length - 1];
-      if (firstValue.x === 0 && strategy !== "bezier") {
+      if (firstValue.x === 0 && strategy !== 'bezier') {
         // extrapolate the first points
         res = [
           { x: res[0].x, y: res[0].y },
           { x: -res[4].x, y: res[0].y },
         ].concat(res);
       }
-      if (lastValue.x === layoutSize.value.width && strategy !== "bezier") {
+      if (lastValue.x === layoutSize.value.width && strategy !== 'bezier') {
         // extrapolate the last points
         res[res.length - 1].x = lastValue.x + 20;
         if (res.length > 2) {
@@ -566,8 +566,8 @@ function ChartPath({
     }
 
     if (
-      (smoothing !== 0 && (strategy === "complex" || strategy === "simple")) ||
-      (strategy === "bezier" &&
+      (smoothing !== 0 && (strategy === 'complex' || strategy === 'simple')) ||
+      (strategy === 'bezier' &&
         (!smoothingWhileTransitioningEnabledValue.value ||
           progress.value === 1))
     ) {
@@ -578,8 +578,8 @@ function ChartPath({
       .map(({ x, y }) => {
         return `L ${x} ${y}`;
       })
-      .join(" ")
-      .replace("L", "M");
+      .join(' ')
+      .replace('L', 'M');
   };
 
   const path = useDerivedValue(createPath);
@@ -590,7 +590,7 @@ function ChartPath({
     }
 
     runOnUI(() => {
-      "worklet";
+      'worklet';
       try {
         const generatedPath = createPath();
 
@@ -610,7 +610,7 @@ function ChartPath({
             Number(selectedStrokeWidthValue.value)) +
         Number(selectedStrokeWidthValue.value),
     };
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       props.style = {
         opacity: pathOpacity.value * (1 - selectedOpacity) + selectedOpacity,
       };
