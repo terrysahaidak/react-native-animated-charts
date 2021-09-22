@@ -24,7 +24,7 @@ import ChartContext, {
 } from '../../helpers/ChartContext';
 import { findYExtremes } from '../../helpers/extremesHelpers';
 import { svgBezierPath } from '../../smoothing/smoothSVG';
-import { pathPropertiesModule, useUIValue } from './pathProperties';
+import { requireOnUI, useUIValue } from './pathProperties';
 
 function impactHeavy() {
   'worklet';
@@ -594,9 +594,11 @@ function ChartPath({
       try {
         const generatedPath = createPath();
 
-        pathPropertiesUI().value = pathPropertiesModule()(generatedPath);
+        pathPropertiesUI().value = requireOnUI('svg-path-properties')(
+          generatedPath
+        );
       } catch (err) {
-        console.log(err);
+        console.log('Error', err);
       }
     })();
   }, [currData.value]);

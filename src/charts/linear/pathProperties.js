@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { useWorkletCallback } from "react-native-reanimated";
+import { useRef } from 'react';
+import { useWorkletCallback } from 'react-native-reanimated';
 
 export function useUIValue() {
   const idRef = useRef();
@@ -11,7 +11,7 @@ export function useUIValue() {
   const { current } = idRef;
 
   return useWorkletCallback(() => {
-    "worklet";
+    'worklet';
 
     if (!global.remoteValues) {
       global.remoteValues = {};
@@ -28,9 +28,26 @@ export function useUIValue() {
   });
 }
 
-export function pathPropertiesModule() {
-  "worklet";
+function requireOrAdd(name, module) {
+  'worklet';
 
+  if (!global.__reanimatedUIModulesMap) {
+    global.__reanimatedUIModulesMap = {};
+  }
+
+  if (!global.__reanimatedUIModulesMap[name]) {
+    global.__reanimatedUIModulesMap[name] = module();
+  }
+
+  return global.__reanimatedUIModulesMap[name];
+}
+
+export function pathPropertiesModule() {
+  'worklet';
+
+  // https://github.com/rveciana/svg-path-properties
+  // Copyright (c) 2016 Roger Veciana i Rovira
+  // https://github.com/rveciana/svg-path-properties/blob/master/LICENSE
   function t(t, n, e) {
     return (
       n in t
@@ -50,24 +67,24 @@ export function pathPropertiesModule() {
         if (Array.isArray(t)) return e(t);
       })(t) ||
       (function (t) {
-        if ("undefined" != typeof Symbol && Symbol.iterator in Object(t))
+        if ('undefined' != typeof Symbol && Symbol.iterator in Object(t))
           return Array.from(t);
       })(t) ||
       (function (t, n) {
         if (!t) return;
-        if ("string" == typeof t) return e(t, n);
+        if ('string' == typeof t) return e(t, n);
         var i = Object.prototype.toString.call(t).slice(8, -1);
-        "Object" === i && t.constructor && (i = t.constructor.name);
-        if ("Map" === i || "Set" === i) return Array.from(t);
+        'Object' === i && t.constructor && (i = t.constructor.name);
+        if ('Map' === i || 'Set' === i) return Array.from(t);
         if (
-          "Arguments" === i ||
+          'Arguments' === i ||
           /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(i)
         )
           return e(t, n);
       })(t) ||
       (function () {
         throw new TypeError(
-          "Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+          'Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.'
         );
       })()
     );
@@ -86,14 +103,14 @@ export function pathPropertiesModule() {
     },
     a = function (n, e, i, h) {
       var r = this;
-      t(this, "x0", void 0),
-        t(this, "x1", void 0),
-        t(this, "y0", void 0),
-        t(this, "y1", void 0),
-        t(this, "getTotalLength", function () {
+      t(this, 'x0', void 0),
+        t(this, 'x1', void 0),
+        t(this, 'y0', void 0),
+        t(this, 'y1', void 0),
+        t(this, 'getTotalLength', function () {
           return Math.sqrt(Math.pow(r.x0 - r.x1, 2) + Math.pow(r.y0 - r.y1, 2));
         }),
-        t(this, "getPointAtLength", function (t) {
+        t(this, 'getPointAtLength', function (t) {
           var n =
             t / Math.sqrt(Math.pow(r.x0 - r.x1, 2) + Math.pow(r.y0 - r.y1, 2));
           n = Number.isNaN(n) ? 1 : n;
@@ -101,13 +118,13 @@ export function pathPropertiesModule() {
             i = (r.y1 - r.y0) * n;
           return { x: r.x0 + e, y: r.y0 + i };
         }),
-        t(this, "getTangentAtLength", function (t) {
+        t(this, 'getTangentAtLength', function (t) {
           var n = Math.sqrt(
             (r.x1 - r.x0) * (r.x1 - r.x0) + (r.y1 - r.y0) * (r.y1 - r.y0)
           );
           return { x: (r.x1 - r.x0) / n, y: (r.y1 - r.y0) / n };
         }),
-        t(this, "getPropertiesAtLength", function (t) {
+        t(this, 'getPropertiesAtLength', function (t) {
           var n = r.getPointAtLength(t),
             e = r.getTangentAtLength(t);
           return { x: n.x, y: n.y, tangentX: e.x, tangentY: e.y };
@@ -119,20 +136,20 @@ export function pathPropertiesModule() {
     },
     o = function (n, e, i, h, r, s, a, o, l) {
       var c = this;
-      t(this, "x0", void 0),
-        t(this, "y0", void 0),
-        t(this, "rx", void 0),
-        t(this, "ry", void 0),
-        t(this, "xAxisRotate", void 0),
-        t(this, "LargeArcFlag", void 0),
-        t(this, "SweepFlag", void 0),
-        t(this, "x1", void 0),
-        t(this, "y1", void 0),
-        t(this, "length", void 0),
-        t(this, "getTotalLength", function () {
+      t(this, 'x0', void 0),
+        t(this, 'y0', void 0),
+        t(this, 'rx', void 0),
+        t(this, 'ry', void 0),
+        t(this, 'xAxisRotate', void 0),
+        t(this, 'LargeArcFlag', void 0),
+        t(this, 'SweepFlag', void 0),
+        t(this, 'x1', void 0),
+        t(this, 'y1', void 0),
+        t(this, 'length', void 0),
+        t(this, 'getTotalLength', function () {
           return c.length;
         }),
-        t(this, "getPointAtLength", function (t) {
+        t(this, 'getPointAtLength', function (t) {
           t < 0 ? (t = 0) : t > c.length && (t = c.length);
           var n = g(
             { x: c.x0, y: c.y0 },
@@ -146,7 +163,7 @@ export function pathPropertiesModule() {
           );
           return { x: n.x, y: n.y };
         }),
-        t(this, "getTangentAtLength", function (t) {
+        t(this, 'getTangentAtLength', function (t) {
           t < 0 ? (t = 0) : t > c.length && (t = c.length);
           var n,
             e = 0.05,
@@ -163,7 +180,7 @@ export function pathPropertiesModule() {
             ? { x: -h / s, y: -r / s }
             : { x: h / s, y: r / s };
         }),
-        t(this, "getPropertiesAtLength", function (t) {
+        t(this, 'getPropertiesAtLength', function (t) {
           var n = c.getTangentAtLength(t),
             e = c.getPointAtLength(t);
           return { x: e.x, y: e.y, tangentX: n.x, tangentY: n.y };
@@ -671,18 +688,18 @@ export function pathPropertiesModule() {
     },
     _ = function (n, e, i, h, r, s, a, o) {
       var g = this;
-      t(this, "a", void 0),
-        t(this, "b", void 0),
-        t(this, "c", void 0),
-        t(this, "d", void 0),
-        t(this, "length", void 0),
-        t(this, "getArcLength", void 0),
-        t(this, "getPoint", void 0),
-        t(this, "getDerivative", void 0),
-        t(this, "getTotalLength", function () {
+      t(this, 'a', void 0),
+        t(this, 'b', void 0),
+        t(this, 'c', void 0),
+        t(this, 'd', void 0),
+        t(this, 'length', void 0),
+        t(this, 'getArcLength', void 0),
+        t(this, 'getPoint', void 0),
+        t(this, 'getDerivative', void 0),
+        t(this, 'getTotalLength', function () {
           return g.length;
         }),
-        t(this, "getPointAtLength", function (t) {
+        t(this, 'getPointAtLength', function (t) {
           var n = [g.a.x, g.b.x, g.c.x, g.d.x],
             e = [g.a.y, g.b.y, g.c.y, g.d.y],
             i = q(t, g.length, function (t) {
@@ -690,7 +707,7 @@ export function pathPropertiesModule() {
             });
           return g.getPoint(n, e, i);
         }),
-        t(this, "getTangentAtLength", function (t) {
+        t(this, 'getTangentAtLength', function (t) {
           var n = [g.a.x, g.b.x, g.c.x, g.d.x],
             e = [g.a.y, g.b.y, g.c.y, g.d.y],
             i = q(t, g.length, function (t) {
@@ -700,7 +717,7 @@ export function pathPropertiesModule() {
             r = Math.sqrt(h.x * h.x + h.y * h.y);
           return r > 0 ? { x: h.x / r, y: h.y / r } : { x: 0, y: 0 };
         }),
-        t(this, "getPropertiesAtLength", function (t) {
+        t(this, 'getPropertiesAtLength', function (t) {
           var n,
             e = [g.a.x, g.b.x, g.c.x, g.d.x],
             i = [g.a.y, g.b.y, g.c.y, g.d.y],
@@ -713,10 +730,10 @@ export function pathPropertiesModule() {
           var a = g.getPoint(e, i, h);
           return { x: a.x, y: a.y, tangentX: n.x, tangentY: n.y };
         }),
-        t(this, "getC", function () {
+        t(this, 'getC', function () {
           return g.c;
         }),
-        t(this, "getD", function () {
+        t(this, 'getD', function () {
           return g.d;
         }),
         (this.a = { x: n, y: e }),
@@ -739,11 +756,11 @@ export function pathPropertiesModule() {
     },
     S = function (e) {
       var r = this;
-      t(this, "length", 0),
-        t(this, "partial_lengths", []),
-        t(this, "functions", []),
-        t(this, "initial_point", null),
-        t(this, "getPartAtLength", function (t) {
+      t(this, 'length', 0),
+        t(this, 'partial_lengths', []),
+        t(this, 'functions', []),
+        t(this, 'initial_point', null),
+        t(this, 'getPartAtLength', function (t) {
           t < 0 ? (t = 0) : t > r.length && (t = r.length);
           for (
             var n = r.partial_lengths.length - 1;
@@ -753,24 +770,24 @@ export function pathPropertiesModule() {
             n--;
           return n++, { fraction: t - r.partial_lengths[n - 1], i: n };
         }),
-        t(this, "getTotalLength", function () {
+        t(this, 'getTotalLength', function () {
           return r.length;
         }),
-        t(this, "getPointAtLength", function (t) {
+        t(this, 'getPointAtLength', function (t) {
           var n = r.getPartAtLength(t),
             e = r.functions[n.i];
           if (e) return e.getPointAtLength(n.fraction);
           if (r.initial_point) return r.initial_point;
-          throw new Error("Wrong function at this part.");
+          throw new Error('Wrong function at this part.');
         }),
-        t(this, "getTangentAtLength", function (t) {
+        t(this, 'getTangentAtLength', function (t) {
           var n = r.getPartAtLength(t),
             e = r.functions[n.i];
           if (e) return e.getTangentAtLength(n.fraction);
           if (r.initial_point) return { x: 0, y: 0 };
-          throw new Error("Wrong function at this part.");
+          throw new Error('Wrong function at this part.');
         }),
-        t(this, "getPropertiesAtLength", function (t) {
+        t(this, 'getPropertiesAtLength', function (t) {
           var n = r.getPartAtLength(t),
             e = r.functions[n.i];
           if (e) return e.getPropertiesAtLength(n.fraction);
@@ -781,9 +798,9 @@ export function pathPropertiesModule() {
               tangentX: 0,
               tangentY: 0,
             };
-          throw new Error("Wrong function at this part.");
+          throw new Error('Wrong function at this part.');
         }),
-        t(this, "getParts", function () {
+        t(this, 'getParts', function () {
           for (var t = [], n = 0; n < r.functions.length; n++)
             if (null !== r.functions[n]) {
               r.functions[n] = r.functions[n];
@@ -804,19 +821,19 @@ export function pathPropertiesModule() {
       for (
         var g,
           u = (function (t) {
-            var e = (t && t.length > 0 ? t : "M0,0").match(h);
+            var e = (t && t.length > 0 ? t : 'M0,0').match(h);
             if (!e)
-              throw new Error("No path elements found in string ".concat(t));
+              throw new Error('No path elements found in string '.concat(t));
             return e.reduce(function (t, e) {
               var h = e.charAt(0),
                 r = h.toLowerCase(),
                 a = s(e.substr(1));
               for (
-                "m" === r &&
+                'm' === r &&
                 a.length > 2 &&
                 (t.push([h].concat(n(a.splice(0, 2)))),
-                (r = "l"),
-                (h = "m" === h ? "l" : "L"));
+                (r = 'l'),
+                (h = 'm' === h ? 'l' : 'L'));
                 a.length >= 0;
 
               ) {
@@ -828,8 +845,8 @@ export function pathPropertiesModule() {
                   throw new Error(
                     'Malformed path data: "'
                       .concat(h, '" must have ')
-                      .concat(i[r], " elements and has ")
-                      .concat(a.length, ": ")
+                      .concat(i[r], ' elements and has ')
+                      .concat(a.length, ': ')
                       .concat(e)
                   );
                 t.push([h].concat(n(a.splice(0, i[r]))));
@@ -844,20 +861,20 @@ export function pathPropertiesModule() {
         y < u.length;
         y++
       ) {
-        if ("M" === u[y][0])
+        if ('M' === u[y][0])
           (f = [(l = [u[y][1], u[y][2]])[0], l[1]]),
             this.functions.push(null),
             0 === y && (this.initial_point = { x: u[y][1], y: u[y][2] });
-        else if ("m" === u[y][0])
+        else if ('m' === u[y][0])
           (f = [(l = [u[y][1] + l[0], u[y][2] + l[1]])[0], l[1]]),
             this.functions.push(null);
-        else if ("L" === u[y][0])
+        else if ('L' === u[y][0])
           (this.length += Math.sqrt(
             Math.pow(l[0] - u[y][1], 2) + Math.pow(l[1] - u[y][2], 2)
           )),
             this.functions.push(new a(l[0], u[y][1], l[1], u[y][2])),
             (l = [u[y][1], u[y][2]]);
-        else if ("l" === u[y][0])
+        else if ('l' === u[y][0])
           (this.length += Math.sqrt(
             Math.pow(u[y][1], 2) + Math.pow(u[y][2], 2)
           )),
@@ -865,29 +882,29 @@ export function pathPropertiesModule() {
               new a(l[0], u[y][1] + l[0], l[1], u[y][2] + l[1])
             ),
             (l = [u[y][1] + l[0], u[y][2] + l[1]]);
-        else if ("H" === u[y][0])
+        else if ('H' === u[y][0])
           (this.length += Math.abs(l[0] - u[y][1])),
             this.functions.push(new a(l[0], u[y][1], l[1], l[1])),
             (l[0] = u[y][1]);
-        else if ("h" === u[y][0])
+        else if ('h' === u[y][0])
           (this.length += Math.abs(u[y][1])),
             this.functions.push(new a(l[0], l[0] + u[y][1], l[1], l[1])),
             (l[0] = u[y][1] + l[0]);
-        else if ("V" === u[y][0])
+        else if ('V' === u[y][0])
           (this.length += Math.abs(l[1] - u[y][1])),
             this.functions.push(new a(l[0], l[0], l[1], u[y][1])),
             (l[1] = u[y][1]);
-        else if ("v" === u[y][0])
+        else if ('v' === u[y][0])
           (this.length += Math.abs(u[y][1])),
             this.functions.push(new a(l[0], l[0], l[1], l[1] + u[y][1])),
             (l[1] = u[y][1] + l[1]);
-        else if ("z" === u[y][0] || "Z" === u[y][0])
+        else if ('z' === u[y][0] || 'Z' === u[y][0])
           (this.length += Math.sqrt(
             Math.pow(f[0] - l[0], 2) + Math.pow(f[1] - l[1], 2)
           )),
             this.functions.push(new a(l[0], f[0], l[1], f[1])),
             (l = [f[0], f[1]]);
-        else if ("C" === u[y][0])
+        else if ('C' === u[y][0])
           (g = new _(
             l[0],
             l[1],
@@ -901,7 +918,7 @@ export function pathPropertiesModule() {
             (this.length += g.getTotalLength()),
             (l = [u[y][5], u[y][6]]),
             this.functions.push(g);
-        else if ("c" === u[y][0])
+        else if ('c' === u[y][0])
           (g = new _(
             l[0],
             l[1],
@@ -916,8 +933,8 @@ export function pathPropertiesModule() {
               this.functions.push(g),
               (l = [u[y][5] + l[0], u[y][6] + l[1]]))
             : this.functions.push(new a(l[0], l[0], l[1], l[1]));
-        else if ("S" === u[y][0]) {
-          if (y > 0 && ["C", "c", "S", "s"].indexOf(u[y - 1][0]) > -1) {
+        else if ('S' === u[y][0]) {
+          if (y > 0 && ['C', 'c', 'S', 's'].indexOf(u[y - 1][0]) > -1) {
             if (g) {
               var x = g.getC();
               g = new _(
@@ -946,8 +963,8 @@ export function pathPropertiesModule() {
             ((this.length += g.getTotalLength()),
             (l = [u[y][3], u[y][4]]),
             this.functions.push(g));
-        } else if ("s" === u[y][0]) {
-          if (y > 0 && ["C", "c", "S", "s"].indexOf(u[y - 1][0]) > -1) {
+        } else if ('s' === u[y][0]) {
+          if (y > 0 && ['C', 'c', 'S', 's'].indexOf(u[y - 1][0]) > -1) {
             if (g) {
               var p = g.getC(),
                 v = g.getD();
@@ -977,7 +994,7 @@ export function pathPropertiesModule() {
             ((this.length += g.getTotalLength()),
             (l = [u[y][3] + l[0], u[y][4] + l[1]]),
             this.functions.push(g));
-        } else if ("Q" === u[y][0]) {
+        } else if ('Q' === u[y][0]) {
           if (l[0] == u[y][1] && l[1] == u[y][2]) {
             var M = new a(u[y][1], u[y][3], u[y][2], u[y][4]);
             (this.length += M.getTotalLength()), this.functions.push(M);
@@ -995,7 +1012,7 @@ export function pathPropertiesModule() {
               (this.length += g.getTotalLength()),
               this.functions.push(g);
           (l = [u[y][3], u[y][4]]), (c = [u[y][1], u[y][2]]);
-        } else if ("q" === u[y][0]) {
+        } else if ('q' === u[y][0]) {
           if (0 != u[y][1] || 0 != u[y][2])
             (g = new _(
               l[0],
@@ -1020,8 +1037,8 @@ export function pathPropertiesModule() {
           }
           (c = [l[0] + u[y][1], l[1] + u[y][2]]),
             (l = [u[y][3] + l[0], u[y][4] + l[1]]);
-        } else if ("T" === u[y][0]) {
-          if (y > 0 && ["Q", "q", "T", "t"].indexOf(u[y - 1][0]) > -1)
+        } else if ('T' === u[y][0]) {
+          if (y > 0 && ['Q', 'q', 'T', 't'].indexOf(u[y - 1][0]) > -1)
             (g = new _(
               l[0],
               l[1],
@@ -1039,8 +1056,8 @@ export function pathPropertiesModule() {
             this.functions.push(w), (this.length += w.getTotalLength());
           }
           (c = [2 * l[0] - c[0], 2 * l[1] - c[1]]), (l = [u[y][1], u[y][2]]);
-        } else if ("t" === u[y][0]) {
-          if (y > 0 && ["Q", "q", "T", "t"].indexOf(u[y - 1][0]) > -1)
+        } else if ('t' === u[y][0]) {
+          if (y > 0 && ['Q', 'q', 'T', 't'].indexOf(u[y - 1][0]) > -1)
             (g = new _(
               l[0],
               l[1],
@@ -1059,7 +1076,7 @@ export function pathPropertiesModule() {
           }
           (c = [2 * l[0] - c[0], 2 * l[1] - c[1]]),
             (l = [u[y][1] + l[0], u[y][2] + l[0]]);
-        } else if ("A" === u[y][0]) {
+        } else if ('A' === u[y][0]) {
           var d = new o(
             l[0],
             l[1],
@@ -1074,7 +1091,7 @@ export function pathPropertiesModule() {
           (this.length += d.getTotalLength()),
             (l = [u[y][6], u[y][7]]),
             this.functions.push(d);
-        } else if ("a" === u[y][0]) {
+        } else if ('a' === u[y][0]) {
           var P = new o(
             l[0],
             l[1],
@@ -1096,20 +1113,20 @@ export function pathPropertiesModule() {
     C = function (n) {
       var e = this;
       if (
-        (t(this, "inst", void 0),
-        t(this, "getTotalLength", function () {
+        (t(this, 'inst', void 0),
+        t(this, 'getTotalLength', function () {
           return e.inst.getTotalLength();
         }),
-        t(this, "getPointAtLength", function (t) {
+        t(this, 'getPointAtLength', function (t) {
           return e.inst.getPointAtLength(t);
         }),
-        t(this, "getTangentAtLength", function (t) {
+        t(this, 'getTangentAtLength', function (t) {
           return e.inst.getTangentAtLength(t);
         }),
-        t(this, "getPropertiesAtLength", function (t) {
+        t(this, 'getPropertiesAtLength', function (t) {
           return e.inst.getPropertiesAtLength(t);
         }),
-        t(this, "getParts", function () {
+        t(this, 'getParts', function () {
           return e.inst.getParts();
         }),
         (this.inst = new S(n)),
@@ -1119,4 +1136,16 @@ export function pathPropertiesModule() {
     };
 
   return C;
+}
+
+export function requireOnUI(name) {
+  'worklet';
+
+  // can be codegened
+  switch (name) {
+    case 'svg-path-properties':
+      return requireOrAdd(name, pathPropertiesModule);
+    default:
+      throw new Error(`Cannot resolve UI module with a name ${name}`);
+  }
 }
